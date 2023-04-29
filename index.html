@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Encriptador de Texto</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="ventanaPrincipal">
+        <h1>ENCRIPTADOR DE MENSAJES</h1>
+        <br>
+        
+        <div class="ingresarTexto">
+            <textarea id="inputText" class="inTexto" placeholder="Ingrese el texto aquí..."></textarea>
+        </div>
+        <div class="botones">
+            <button id="encryptButton" class="encriptar">Encriptar</button>
+            <button id="decryptButton" class="desencriptar">Desencriptar</button>
+        </div>
+        <div class="areaResultado">
+            <textarea id="outputText" class="inTexto" readonly></textarea>
+        </div>
+    </div>
+    <footer>
+        <p>Desarrollado por Deiby Herrera</p>
+    </footer>
+
+    <script>
+        const inputText = document.getElementById("inputText");
+        const outputText = document.getElementById("outputText");
+        const encryptButton = document.getElementById("encryptButton");
+        const decryptButton = document.getElementById("decryptButton");
+
+        const encryptionKeys = {
+            "e": "enter",
+            "i": "imes",
+            "a": "ai",
+            "o": "ober",
+            "u": "ufat"
+        };
+
+        const decryptionKeys = Object.entries(encryptionKeys).reduce((acc, [key, value]) => {
+            acc[value] = key;
+            return acc;
+        }, {});
+
+        function encrypt(text) {
+            return text.split("").map(char => encryptionKeys[char] || char).join("");
+        }
+
+        function decrypt(text) {
+            const regex = new RegExp(Object.keys(decryptionKeys).join("|"), "g");
+            return text.replace(regex, match => decryptionKeys[match]);
+        }
+
+        encryptButton.addEventListener("click", () => {
+            const input = inputText.value.toLowerCase();
+            outputText.value = encrypt(input);
+        });
+
+        decryptButton.addEventListener("click", () => {
+            const input = inputText.value.toLowerCase();
+            outputText.value = decrypt(input);
+        });
+    </script>
+</body>
+</html>
